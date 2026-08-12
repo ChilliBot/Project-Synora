@@ -1,6 +1,8 @@
 # API and Domain Contract Review v0.1
 
-**Status:** Proposed for Milestone 0.5 review
+**Status:** Approved MVP baseline
+
+**Approval scope:** Identity-specific grants, immediate revocation of new asset access, short-lived signed URLs, MVP representation retention, and limited audit visibility. These defaults may be revisited through a later decision record without silently changing the MVP contract.
 
 ## Ownership rules
 
@@ -30,7 +32,7 @@
 
 ### AuthorizationGrant
 
-`id`, `user_id`, `application_id`, `scopes`, `status`, `granted_at`, `revoked_at?`
+`id`, `user_id`, `identity_id`, `application_id`, `scopes`, `status`, `granted_at`, `revoked_at?`
 
 ### RepresentationProfile
 
@@ -75,6 +77,15 @@ DELETE /authorizations/{application_id}
 
 Identity creation and capture submission remain unavailable during the synthetic-only MVP.
 
+## Approved authorization behavior
+
+- A grant applies to one explicitly selected identity and one application.
+- Creating another identity never adds it to an existing grant.
+- Every representation request must match the identity and application on the active grant.
+- Revocation prevents new representation requests and new signed asset URLs immediately.
+- Existing signed URLs target a maximum lifetime of five minutes.
+- Synora does not attempt to revoke assets already downloaded by an application.
+
 ### Application backend
 
 ```text
@@ -116,6 +127,8 @@ Requires an authenticated application and an active grant with `representation:r
 
 Public responses return an opaque download URL with a short expiration. Bucket names, keys, providers, and internal storage references are never returned.
 
+The MVP target for signed URL lifetime is five minutes. Asset access must be authorized again before each new URL is issued.
+
 ## Errors
 
 ```json
@@ -149,9 +162,36 @@ Not-found responses should be used where forbidden responses would reveal anothe
 
 `POST /representations` requires an idempotency key scoped to the authenticated application. Reuse with the same request returns the original result. Reuse with different input returns `IDEMPOTENCY_CONFLICT`.
 
-## Review questions
+## Approved retention behavior
 
-1. Should players select a specific identity when granting access, or may one grant cover all current identities?
-2. Should revocation invalidate existing signed URLs immediately or only prevent new URLs?
-3. How long should ready representations remain available during the synthetic MVP?
-4. Which audit events may be visible to players and developers?
+- Synthetic MVP representations may be retained for up to 30 days after creation or last authorized use.
+- Authorized use may extend the retention window, but never beyond 30 days from that use.
+- Representations associated with a revoked application may enter deletion immediately.
+- This is an MVP default, not a permanent production retention promise.
+- Deletion is tracked as a workflow rather than treated as complete when a single database row changes.
+
+## Approved audit visibility
+
+Players may view safe events tied to their identity for:
+
+- grants;
+- revocations;
+- representation requests;
+- asset access.
+
+Developers may view the same event categories for applications they own, using safe metadata only.
+
+The following remain internal:
+
+- processing internals;
+- security telemetry;
+- provider diagnostics;
+- infrastructure and operational details;
+- sensitive identifiers or storage references.
+
+## Closed review questions
+
+1. Grants are identity-specific and application-specific.
+2. Revocation immediately blocks new URLs; existing URLs target five-minute expiry.
+3. Synthetic representations use a rolling retention period of up to 30 days.
+4. Players and developers receive limited, ownership-scoped audit visibility.

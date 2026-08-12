@@ -11,6 +11,8 @@ Real facial captures create privacy, biometric, age, ownership, processor, and d
 
 Prohibit real-user facial captures during the MVP. Use synthetic or explicitly licensed project fixtures marked non-production. Build tracked deletion behavior for synthetic assets without claiming production compliance.
 
+Synthetic representations may be retained for up to 30 days after creation or last authorized use. Representations tied to a revoked application may enter deletion immediately. This is an MVP default policy, not a permanent production commitment.
+
 ## Rationale
 
 The first milestone can prove the product architecture without exposing real people to unresolved risk.

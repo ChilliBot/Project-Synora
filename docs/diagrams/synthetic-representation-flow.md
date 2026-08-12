@@ -22,10 +22,12 @@ sequenceDiagram
     J->>D: Store checksums and mark ready
     G->>A: Request asset access
     A->>D: Recheck active grant and scope
-    A-->>G: Return short-lived opaque URL
+    A-->>G: Return opaque URL (target max 5 minutes)
     P->>W: Revoke Demo A
     W->>A: Revoke grant
     A->>D: Record revocation and audit event
     G->>A: Request new representation or URL
     A-->>G: AUTHORIZATION_REVOKED
 ```
+
+The flow does not attempt to recall an asset already downloaded by the application. Synthetic representations may remain for up to 30 days after creation or last authorized use unless revocation starts deletion earlier.

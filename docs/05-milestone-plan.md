@@ -14,10 +14,12 @@ If an MVP shortcut would block the long-term goal of portable player identity, w
 
 ## Milestone 0.5 — API and domain contracts
 
+**Status: Approved for the MVP baseline.** Implementation remains blocked until the documentation pull request recording this approval is reviewed and merged.
+
 - Review core entities, ownership rules, state models, endpoints, schemas, errors, idempotency, and authorization checks.
 - Confirm which contracts are public and which remain internal.
 
-**Done when:** Contract examples validate, authorization boundaries are explicit, errors are stable and safe, docs are current, and the contract set is approved.
+**Done when:** Contract examples validate, authorization boundaries are explicit, errors are stable and safe, docs are current, and the contract set is approved. These conditions are satisfied by the approved v0.1 contract baseline once its documentation pull request is merged.
 
 ## Milestone 1 — Repository skeleton
 

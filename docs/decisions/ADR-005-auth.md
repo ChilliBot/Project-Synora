@@ -9,7 +9,7 @@ Human login is not the product's core differentiator, but player consent, applic
 
 ## Decision
 
-Use managed OpenID Connect for player and developer authentication. Synora owns developer applications, scopes, grants, consent, revocation, and audit history. Public game clients hold no long-lived secrets; confidential backends authenticate separately.
+Use managed OpenID Connect for player and developer authentication. Synora owns developer applications, scopes, grants, consent, revocation, and audit history. Every grant is scoped to one selected identity and one application. Public game clients hold no long-lived secrets; confidential backends authenticate separately.
 
 ## Rationale
 
@@ -18,6 +18,8 @@ Delegating human authentication avoids building password security while preservi
 ## Consequences
 
 Every representation and asset operation must check actor, application, identity ownership, grant status, and scope. Provider selection remains deferred.
+
+Players may view safe grant, revocation, representation-request, and asset-access events for their identities. Developers receive the same limited categories for applications they own. Security telemetry and operational diagnostics remain internal.
 
 ## Reversal conditions
 
