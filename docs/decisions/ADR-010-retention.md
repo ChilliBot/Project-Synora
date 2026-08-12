@@ -1,0 +1,24 @@
+# ADR-010: Raw capture retention and deletion
+
+**Status:** Proposed  
+**Date:** 2026-08-12
+
+## Context
+
+Real facial captures create privacy, biometric, age, ownership, processor, and deletion obligations that are not yet resolved.
+
+## Decision
+
+Prohibit real-user facial captures during the MVP. Use synthetic or explicitly licensed project fixtures marked non-production. Build tracked deletion behavior for synthetic assets without claiming production compliance.
+
+## Rationale
+
+The first milestone can prove the product architecture without exposing real people to unresolved risk.
+
+## Consequences
+
+No biometric identity, real-user likeness, or production deletion claim is permitted. Logs exclude raw identity content.
+
+## Reversal conditions
+
+Allow real captures only after jurisdiction, age, ownership, classification, processor, retention, deletion, backup, security, and incident-response decisions are approved.
