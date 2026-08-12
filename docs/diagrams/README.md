@@ -1,10 +1,11 @@
 # Diagrams
 
-Planned diagrams:
+Current review diagrams:
 
-1. System context and trust boundaries.
-2. Player capture and consent flow.
-3. Game authorization flow.
-4. Representation processing lifecycle.
-5. Revocation and deletion propagation.
+- [System boundaries](system-boundaries.md)
+- [Synthetic representation flow](synthetic-representation-flow.md)
 
+Still planned:
+
+1. Real player capture and consent flow, after the synthetic MVP.
+2. Production deletion propagation, after retention decisions.

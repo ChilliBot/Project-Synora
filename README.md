@@ -14,6 +14,8 @@ No game, engine, publisher, or franchise integration should be claimed unless it
 
 - `docs/00-product-engineering-foundation.md` — original working specification
 - `docs/04-design-review-v0.1.md` — initial engineering review and recommendations
+- `docs/05-milestone-plan.md` — gated MVP sequence
+- `docs/06-api-domain-contract-review.md` — proposed Milestone 0.5 contracts
 - `docs/decisions/` — architecture decision records (ADRs)
 - `docs/security/` — threat model, privacy, and data-classification work
 - `docs/diagrams/` — architecture and data-flow diagrams
