@@ -1,0 +1,165 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum IdentityStatus {
+  pending
+  ready
+  failed
+  deleted
+}
+
+enum GrantStatus {
+  active
+  revoked
+  expired
+}
+
+enum RepresentationStatus {
+  requested
+  queued
+  processing
+  validating
+  ready
+  failed
+  invalidated
+  deleted
+}
+
+enum JobStatus {
+  queued
+  leased
+  running
+  retry_wait
+  succeeded
+  failed
+  cancelled
+}
+
+model User {
+  id         String               @id @default(uuid())
+  status     String               @default("active")
+  createdAt  DateTime             @default(now())
+  updatedAt  DateTime             @updatedAt
+  identities Identity[]
+  grants     AuthorizationGrant[]
+}
+
+model Identity {
+  id              String                 @id @default(uuid())
+  userId          String
+  status          IdentityStatus         @default(pending)
+  canonicalVersion Int                   @default(1)
+  createdAt       DateTime               @default(now())
+  updatedAt       DateTime               @updatedAt
+  deletedAt       DateTime?
+  user            User                   @relation(fields: [userId], references: [id])
+  grants          AuthorizationGrant[]
+  representations Representation[]
+}
+
+model DeveloperApplication {
+  id              String                  @id @default(uuid())
+  ownerId         String
+  name            String
+  environment     String
+  clientType      String
+  status          String                  @default("active")
+  createdAt       DateTime                @default(now())
+  grants          AuthorizationGrant[]
+  profiles        RepresentationProfile[]
+  representations Representation[]
+}
+
+model AuthorizationGrant {
+  id            String               @id @default(uuid())
+  userId        String
+  identityId    String
+  applicationId String
+  scopes        String[]
+  status        GrantStatus          @default(active)
+  grantedAt     DateTime             @default(now())
+  revokedAt     DateTime?
+  user          User                 @relation(fields: [userId], references: [id])
+  identity      Identity             @relation(fields: [identityId], references: [id])
+  application   DeveloperApplication @relation(fields: [applicationId], references: [id])
+
+  @@unique([identityId, applicationId])
+}
+
+model RepresentationProfile {
+  id                 String
+  version            Int
+  applicationId      String
+  representationType String
+  constraints        Json
+  status             String                 @default("active")
+  application        DeveloperApplication   @relation(fields: [applicationId], references: [id])
+  representations    Representation[]
+
+  @@id([id, version])
+}
+
+model Representation {
+  id               String               @id @default(uuid())
+  identityId       String
+  applicationId    String
+  profileId        String
+  profileVersion   Int
+  canonicalVersion Int
+  status           RepresentationStatus @default(requested)
+  generatorVersion String
+  assetSetId       String?
+  createdAt        DateTime             @default(now())
+  identity         Identity             @relation(fields: [identityId], references: [id])
+  application      DeveloperApplication @relation(fields: [applicationId], references: [id])
+  profile          RepresentationProfile @relation(fields: [profileId, profileVersion], references: [id, version])
+}
+
+model ProcessingJob {
+  id              String    @id @default(uuid())
+  jobType         String
+  subjectId       String
+  idempotencyKey  String
+  status          JobStatus @default(queued)
+  attempt         Int       @default(0)
+  availableAt     DateTime  @default(now())
+  leaseOwner      String?
+  leaseExpiresAt  DateTime?
+  errorCode       String?
+  createdAt       DateTime  @default(now())
+  startedAt       DateTime?
+  completedAt     DateTime?
+
+  @@unique([jobType, idempotencyKey])
+}
+
+model Asset {
+  id               String   @id @default(uuid())
+  assetSetId       String
+  kind             String
+  format           String
+  storageReference String
+  checksum         String
+  sizeBytes        BigInt
+  metadata         Json
+  createdAt        DateTime @default(now())
+  expiresAt        DateTime?
+}
+
+model AuditEvent {
+  id            String   @id @default(uuid())
+  actorType     String
+  actorId       String
+  action        String
+  subjectType   String
+  subjectId     String
+  applicationId String?
+  timestamp     DateTime @default(now())
+  metadataSafe  Json
+}

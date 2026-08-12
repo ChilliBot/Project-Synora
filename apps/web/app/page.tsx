@@ -1,0 +1,1 @@
+export default function Home() { return <main><p className="eyebrow">Project Synora</p><h1>Players keep their identity.<br />Games keep their worlds.</h1><p>The MVP portal will prove consent, two distinct representations, and independent revocation using synthetic identities.</p></main>; }

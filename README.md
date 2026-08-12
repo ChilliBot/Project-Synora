@@ -21,3 +21,18 @@ No game, engine, publisher, or franchise integration should be claimed unless it
 - `docs/diagrams/` — architecture and data-flow diagrams
 
 Application code will be scaffolded only after the initial architecture review gate is approved.
+
+## Local development
+
+Requires Node.js 22+, pnpm through Corepack, and Docker for PostgreSQL and MinIO.
+
+```powershell
+Copy-Item .env.example .env
+docker compose up -d
+corepack pnpm install
+corepack pnpm typecheck
+corepack pnpm test
+corepack pnpm build
+```
+
+Docker is only needed for local infrastructure. The current scaffold build and tests do not require live services.

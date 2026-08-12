@@ -9,6 +9,11 @@ coverage/
 .vscode/
 .idea/
 .DS_Store
+node_modules/
+dist/
+.next/
+.env
+coverage/
 Thumbs.db
 *.log
 .cache/
@@ -16,4 +21,3 @@ Thumbs.db
 artifacts/
 captures/
 representations/
-
