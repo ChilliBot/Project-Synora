@@ -23,6 +23,8 @@ If an MVP shortcut would block the long-term goal of portable player identity, w
 
 ## Milestone 1 — Repository skeleton
 
+**Status: Ready for review.** Approval remains pending until the Milestone 1 pull request is reviewed and merged.
+
 - Create the pnpm workspace, web, API, packages, worker, local dependencies, migrations, CI, and basic checks.
 
 **Done when:** A clean checkout installs, builds, tests, starts locally, matches the approved contracts, and is approved.
