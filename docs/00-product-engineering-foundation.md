@@ -1,6 +1,6 @@
 # Project Synora --- Universal Gaming Identity Platform
 
-## Product & Engineering Foundation for Codex
+## Product & Engineering Foundation
 
 **Status:** Working specification\
 **Codename:** Project Synora (temporary; final product name TBD)\
